@@ -2,7 +2,6 @@ package com.example.openaiimage.service.impl;
 
 import com.example.openaiimage.client.ImageClient;
 import com.example.openaiimage.model.ImageGenerationRequest;
-import com.example.openaiimage.model.ImageGenerationResponse;
 import com.example.openaiimage.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class ImageServiceImpl implements ImageService {
     private static final String TOKEN = System.getenv("OPENAI_TOKEN");
     
     @Override
-    public ImageGenerationResponse createImage(String request) {
+    public String createImage(String request) {
         ImageGenerationRequest imageGenerationRequest = ImageGenerationRequest.builder()
                 .prompt(request)
                 .n(1)
@@ -24,6 +23,6 @@ public class ImageServiceImpl implements ImageService {
                 .responseFormat("url")
                 .user("user")
                 .build();
-        return imageClient.createImage(imageGenerationRequest, TOKEN);
+        return imageClient.createImage(imageGenerationRequest, TOKEN).getData().get(0).getUrl();
     }
 }
